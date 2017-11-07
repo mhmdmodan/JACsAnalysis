@@ -32,3 +32,4 @@ Papers$paperID <- as.factor(Papers$paperID)
 
 #Delete unnecessary vars
 Authors <- select(Authors,-title,-orcidID)
+save(Authors, Paper_Authors, Papers, file='tables.RData')
