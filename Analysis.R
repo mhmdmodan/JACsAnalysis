@@ -33,10 +33,38 @@ ggplot(PapersNoRet, aes(x=pubdate, fill=type)) +
   labs(
     x='Published Date',
     y='Percent',
-    fill='Type',
+    fill='Type of Publication',
     title='Distribution of paper types from 1995-2016'
   ) +
   five38Mod
+
+#Bar plot of avg paper lengths
+PapersLen <-   PapersNoRet %>% 
+  mutate(paperLen = endpg-startpg) %>% 
+  filter(paperLen >= 0)
+
+ggplot(
+  PapersLen %>% 
+    group_by(type) %>% 
+    summarize(avg = mean(paperLen),
+              stDev = sd(paperLen)),
+  aes(x=reorder(type,avg), y=avg)
+) +
+  geom_col(fill='dodgerblue3') +
+  geom_errorbar(aes(ymin=avg-stDev,ymax=avg+stDev), width=.3, color='grey30') +
+  labs(
+    x = 'Type of Publication',
+    y = 'Average Length (pages)',
+    title = 'Average length of publication by type',
+    subtitle = 'Error bars represent 1 standard deviation'
+  ) +
+  coord_flip() +
+  five38Mod
+
+#See how paper length changed over time
+ggplot(PapersLen %>% filter(type=='Article'), aes(x=pubdate, y=paperLen)) + 
+  geom_jitter(alpha=.1) + 
+  geom_smooth(method='lm')
 
 #Calculate and plot mean and 95% CI of papers by volume
 PapersVol <- Papers %>% 
