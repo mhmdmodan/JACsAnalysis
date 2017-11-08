@@ -6,3 +6,7 @@ library(lubridate)
 library(stringr)
 library(tm)
 load('tables.RData')
+
+titleCorpus <- VCorpus(VectorSource(Papers$title))
+titleCorpusClean <- tm_map(titleCorpus, content_transformer(tolower))
+titleCorpusClean <- tm_map(titleCorpusClean, removeNumbers)
