@@ -5,10 +5,12 @@ library(tint)
 library(lubridate)
 library(rvest)
 library(stringr)
+library(R.utils)
 load('tables.RData')
 
+#fewer papers bc 6.75 a minute
 set.seed(123)
-smallPapers <- Papers[sample(nrow(Papers), 2800), ]
+smallPapers <- Papers[sample(nrow(Papers), 7500), ]
 
 #A function to return the abstract and # views
 getNewData <- function(doi) {
@@ -41,14 +43,16 @@ getNewData <- function(doi) {
 abstracts <- vector(mode='character')
 views <- vector(mode='character')
 progress <- 0
-for(doi in smallPapers$doi) {
+startTime <- seconds(Sys.time())
+for(doi in Papers$doi[1:10]) {
   Sys.sleep(sample(seq(1, 3, by=0.001), 1))
   
   progress = progress + 1
   print(progress)
   
-  out <- try(getNewData(doi))
+  out <- try(withTimeout(getNewData(doi), timeout = 3, onTimeout = 'error'), silent=TRUE)
     if(class(out) =='try-error') {
+      print(paste0(doi,' timed out'))
       abstracts <- append(abstracts,NA)
       views <- append(views,NA)
       next
@@ -57,3 +61,4 @@ for(doi in smallPapers$doi) {
   abstracts <- append(abstracts,out[1])
   views <- append(views,out[2])
 }
+print(seconds(Sys.time())-startTime)

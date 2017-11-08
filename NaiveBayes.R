@@ -6,4 +6,3 @@ library(lubridate)
 library(stringr)
 library(tm)
 load('tables.RData')
-
