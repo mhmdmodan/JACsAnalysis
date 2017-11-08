@@ -34,7 +34,7 @@ ggplot(PapersNoRet, aes(x=pubdate, fill=type)) +
     x='Published Date',
     y='Percent',
     fill='Type of Publication',
-    title='Distribution of paper types from 1995-2016'
+    title='Distribution of paper types from 1996-2016'
   ) +
   five38Mod
 
@@ -63,8 +63,14 @@ ggplot(
 
 #See how paper length changed over time
 ggplot(PapersLen %>% filter(type=='Article'), aes(x=pubdate, y=paperLen)) + 
-  geom_jitter(alpha=.1) + 
-  geom_smooth(method='lm')
+  geom_jitter(alpha=.08) + 
+  geom_smooth(method='lm', se=FALSE, color='dodgerblue') + 
+  labs(
+    x='Date of Publication',
+    y='Length of Publication (pages)',
+    title='Length of articles from 1996-2016'
+  ) +
+  five38Mod
 
 #Calculate and plot mean and 95% CI of papers by volume
 PapersVol <- Papers %>% 
