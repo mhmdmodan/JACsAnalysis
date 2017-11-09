@@ -4,3 +4,4 @@
 .Ruserdata
 database.sqlite
 tables.RData
+scraped.RData
