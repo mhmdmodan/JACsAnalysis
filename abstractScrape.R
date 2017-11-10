@@ -59,3 +59,9 @@ for(doi in randomPapers$doi) {
   views <- append(views,out[2])
 }
 print(seconds(Sys.time())-startTime)
+
+papersAbstract <- randomPapers[1:length(abstracts),]
+papersAbstract$abstract <- abstracts
+papersAbstract$views <- views
+
+save(papersAbstract, file='papersAbstract.RData')
